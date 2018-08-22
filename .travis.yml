@@ -5,6 +5,5 @@ sudo: required
 services:
  - docker
 env:
- - tag="dellelce/gpaw" BASE="dellelce/mkit"
- - tag="dellelce/gpaw-uwsgi" BASE="dellelce/uwsgi"
-script: ./getcomponents.sh && docker build -t "${tag}" --build-arg BASE=${BASE} . && ./docker-push.sh "${tag}"
+ - tag="dellelce/spacy-uwsgi" BASE="dellelce/uwsgi"
+script: docker build -t "${tag}" --build-arg BASE=${BASE} . && ./docker-push.sh "${tag}"

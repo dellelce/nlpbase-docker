@@ -1,50 +1,34 @@
 
-ARG BASE=dellelce/mkit
+ARG BASE=dellelce/uwsgi
 FROM ${BASE}:latest as build
 
 LABEL maintainer="Antonio Dell'Elce"
 
-ENV GPAW         /app/gpaw
-ENV BUILDDIR     ${GPAW}/build
-ENV GPAWINSTALL  ${GPAW}/software
+ENV SPACY         /app/spacy
+ENV BUILDDIR      ${SPACY}/build
+ENV SPACYINSTALL  ${SPACY}/software
 
 # Packages description here
 # MATPLOTLIB:  needed by ase
-ENV MATPLOTLIB  freetype-dev libpng-dev
 ENV AUTOTOOLS   autoconf automake perl
-ENV COMPILERS   gcc g++ gfortran make
+ENV COMPILERS   gcc g++ make
 ENV COREDEV     libc-dev linux-headers make
 
-ENV PACKAGES wget bash ${COMPILERS} ${MATPLOTLIB} ${AUTOTOOLS}
+ENV PACKAGES wget bash ${COMPILERS}  ${AUTOTOOLS}
 
 WORKDIR $BUILDDIR
-COPY *.sh $BUILDDIR/
 
-# these three directories are prepared by "getcomponents.sh"
-COPY blas   $GPAW/source/blas
-COPY lapack $GPAW/source/lapack
-COPY libxc  $GPAW/source/libxc
-
-COPY requirements.txt $GPAW
+COPY requirements.txt $SPACY
 
 RUN  apk add --no-cache  $PACKAGES &&  \
-     bash ${BUILDDIR}/docker.sh $GPAW
+     bash ${BUILDDIR}/docker.sh $SPACY
 
 # Second Stage
-ARG BASE=dellelce/mkit
+ARG BASE=dellelce/uwsgi
 FROM ${BASE}:latest AS final
 
-ENV GPAW            /app/gpaw
-ENV GPAW_SETUP_PATH ${GPAW}/datasets
+ENV SPACY            /app/spacy
 
-VOLUME ${GPAW_SETUP_PATH}
-VOLUME ${GPAW}/executions
+RUN mkdir -p "${SPACY}"/software
 
-RUN mkdir -p "${GPAW}"/software
-
-RUN  apk add --no-cache libgfortran libstdc++
-
-# ain't this dirty?
-ENV LD_PRELOAD /usr/lib/libgfortran.so.3
-
-COPY --from=build ${GPAW}/software ${GPAW}/software
+COPY --from=build ${SPACY}/software ${SPACY}/software
