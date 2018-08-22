@@ -30,6 +30,7 @@ FROM ${BASE}:latest AS final
 
 ENV SPACY            /app/spacy
 
-RUN mkdir -p "${SPACY}"/software
+RUN mkdir -p "${SPACY}"/software &&
+    apk add --no-cache libstdc++
 
 COPY --from=build ${SPACY}/software ${SPACY}/software
