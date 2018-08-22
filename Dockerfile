@@ -17,6 +17,7 @@ ENV COREDEV     libc-dev linux-headers make
 ENV PACKAGES wget bash ${COMPILERS}  ${AUTOTOOLS}
 
 WORKDIR $BUILDDIR
+COPY *.sh $BUILDDIR/
 
 COPY requirements.txt $SPACY
 
