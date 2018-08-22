@@ -1,0 +1,10 @@
+language: c
+notifications:
+   slack: skydreams:1FLUnEeqaNLinKq1p0lJf9F5
+sudo: required
+services:
+ - docker
+env:
+ - tag="dellelce/gpaw" BASE="dellelce/mkit"
+ - tag="dellelce/gpaw-uwsgi" BASE="dellelce/uwsgi"
+script: ./getcomponents.sh && docker build -t "${tag}" --build-arg BASE=${BASE} . && ./docker-push.sh "${tag}"
