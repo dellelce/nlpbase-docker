@@ -20,7 +20,8 @@ WORKDIR $BUILDDIR
 
 COPY requirements.txt $SPACY
 
-RUN  apk add --no-cache  $PACKAGES
+RUN  apk add --no-cache  $PACKAGES &&  \
+     bash ${BUILDDIR}/docker.sh $SPACY
 
 # Second Stage
 ARG BASE=dellelce/uwsgi
