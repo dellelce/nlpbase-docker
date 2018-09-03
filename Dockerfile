@@ -12,7 +12,7 @@ ENV NLPINSTALL  ${NLP}/software
 ENV AUTOTOOLS   autoconf automake perl
 ENV COMPILERS   gcc g++ make
 ENV COREDEV     libc-dev linux-headers make
-ENV PILLOWDEV   zlib-dev libxml2-dev libjpeg
+ENV PILLOWDEV   zlib-dev libxml2-dev libjpeg jpeg-dev
 
 ENV PACKAGES wget bash ${COMPILERS} ${AUTOTOOLS} ${PILLOWDEV}
 
