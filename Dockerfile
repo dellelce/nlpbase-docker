@@ -12,7 +12,7 @@ ENV NLPINSTALL  ${NLP}/software
 ENV AUTOTOOLS   autoconf automake perl
 ENV COMPILERS   gcc g++ make
 ENV COREDEV     libc-dev linux-headers make
-ENV PILLOWDEV   zlib-dev libxml2-dev libjpeg jpeg-dev
+ENV PILLOWDEV   zlib-dev libxml2-dev libjpeg jpeg-dev libxslt-dev libxslt
 
 ENV PACKAGES wget bash ${COMPILERS} ${AUTOTOOLS} ${PILLOWDEV}
 
@@ -29,7 +29,7 @@ ARG BASE=dellelce/uwsgi
 FROM ${BASE}:latest AS final
 
 ENV NLP         /app/nlp
-ENV BINDEPS     libstdc++ libjpeg zlib
+ENV BINDEPS     libstdc++ libjpeg zlib libxslt
 
 RUN mkdir -p "${NLP}"/software && \
     apk add --no-cache ${BINDEPS}
