@@ -45,7 +45,7 @@ test_dir()
 ### MAIN ###
 
 prefix="$1"
-mkdir -p $prefix && bash -x ./install.sh $prefix
+bash ${prefix}/build/install.sh $prefix
 rc=$?
 
 [ "$rc" -eq 0 ] && echo "install.sh failed rc: $rc"
