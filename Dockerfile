@@ -4,8 +4,9 @@ FROM ${BASE}:latest as build
 
 LABEL maintainer="Antonio Dell'Elce"
 
-ENV NLP         /app/nlp
-ENV BUILDDIR    ${NLP}/build
+ARG NLPHOME=/app/nlp
+
+ENV NLP         ${NLPHOME}
 ENV NLPINSTALL  ${NLP}/software
 
 # Packages description here
@@ -16,19 +17,21 @@ ENV PILLOWDEV   zlib-dev libxml2-dev libjpeg jpeg-dev libxslt-dev libxslt
 
 ENV PACKAGES wget bash ${COMPILERS} ${AUTOTOOLS} ${PILLOWDEV}
 
-WORKDIR $BUILDDIR
-COPY *.sh $BUILDDIR/
+WORKDIR ${NLP}
+RUN mkdir -p "${NLP}/build"
 
+COPY *.sh ${NLP}/build
 COPY requirements.txt $NLP
 
 RUN  apk add --no-cache  $PACKAGES &&  \
-     bash ${BUILDDIR}/docker.sh $NLP
+     bash ${NLP}/build/docker.sh $NLP
 
 # Second Stage
 ARG BASE=dellelce/uwsgi
 FROM ${BASE}:latest AS final
 
-ENV NLP         /app/nlp
+ARG NLPHOME=/app/nlp
+ENV NLP         ${NLPHOME}
 ENV BINDEPS     libstdc++ libjpeg zlib libxslt
 
 RUN mkdir -p "${NLP}"/software && \
