@@ -20,7 +20,7 @@ ENV PACKAGES wget bash ${COMPILERS} ${AUTOTOOLS} ${PILLOWDEV}
 WORKDIR ${NLP}
 RUN mkdir -p "${NLP}/build"
 
-COPY *.sh ${NLP}/build
+COPY *.sh ${NLP}/build/
 COPY requirements.txt $NLP
 
 RUN  apk add --no-cache  $PACKAGES &&  \
